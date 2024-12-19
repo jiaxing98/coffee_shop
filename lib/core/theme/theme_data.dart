@@ -29,6 +29,9 @@ abstract class AppTheme {
       );
 }
 
+// ! default textTheme info
+// https://m3.material.io/styles/typography/type-scale-tokens
+
 // ! primary
 // The main color used for prominent components.
 // AppBar, FloatingActionButton
