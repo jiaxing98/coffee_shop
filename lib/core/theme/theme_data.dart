@@ -21,9 +21,9 @@ abstract class AppTheme {
             error: Color(0xFFB3261E),
             onError: Color(0xFFFFFFFF),
             background: Color(0xFFF1F0E8),
-            onBackground: Color(0xFF1C1B1F),
+            onBackground: Color(0xFFE3E3E3),
             surface: Color(0xFFF1F0E8),
-            onSurface: Color(0xFF1C1B1F),
+            onSurface: Color(0xFFE3E3E3),
           ),
         ),
       );

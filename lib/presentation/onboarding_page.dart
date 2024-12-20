@@ -13,15 +13,10 @@ class OnboardingPage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       body: Stack(
         children: [
-          Container(
-            color: Colors.black,
-          ),
-          Image.asset(
-            Images.onboardingCoffee,
-            // fit: BoxFit.fitHeight,
-          ),
+          Container(color: Colors.black),
+          Image.asset(Images.onboardingCoffee),
           Positioned(
-            bottom: MediaQuery.of(context).size.height / 11,
+            top: MediaQuery.of(context).size.height / 1.8,
             left: 16.0,
             right: 16.0,
             child: TweenAnimationBuilder(

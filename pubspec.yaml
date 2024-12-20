@@ -136,6 +136,10 @@ dependencies:
   # https://pub.dev/packages/google_fonts
   google_fonts: ^6.2.1
 
+  # A carousel slider widget.
+  # https://pub.dev/packages/carousel_slider
+  carousel_slider: ^5.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
