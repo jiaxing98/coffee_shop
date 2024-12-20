@@ -1,9 +1,13 @@
 import 'package:coffee_shop/core/extension/build_context_extension.dart';
+import 'package:coffee_shop/core/service_locator.dart';
+import 'package:coffee_shop/presentation/home/blocs/coffee_bloc.dart';
+import 'package:coffee_shop/presentation/home/widgets/coffee_grid.dart';
 import 'package:coffee_shop/presentation/home/widgets/filter_group.dart';
 import 'package:coffee_shop/presentation/home/widgets/location_info.dart';
 import 'package:coffee_shop/presentation/home/widgets/promotion_carousel.dart';
 import 'package:coffee_shop/presentation/home/widgets/search_coffee.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -41,59 +45,76 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomScrollView(
-        controller: _controller,
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            expandedHeight: appbarHeight,
-            backgroundColor: context.colorScheme.primary,
-            flexibleSpace: FlexibleSpaceBar(
-              title: AnimatedOpacity(
-                opacity: _showTitle ? 1.0 : 0.0,
-                duration: Duration(milliseconds: 500),
-                child: Text(
-                  "KO-Hii",
-                  style: context.textStyle.displaySmall?.copyWith(color: Colors.white),
-                ),
-              ),
-              titlePadding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
-              background: Container(
-                height: appbarHeight,
-                padding: EdgeInsets.fromLTRB(16.0, context.padding.top, 16.0, 0.0),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [Colors.black87, context.colorScheme.background],
-                    stops: [0.8, 0.2],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (ctx) => sl.get<CoffeeBloc>()..add(CoffeeFetch())),
+      ],
+      child: Builder(
+        builder: (context) {
+          return Scaffold(
+            body: RefreshIndicator(
+              onRefresh: () async => context.read<CoffeeBloc>().add(CoffeeFetch()),
+              child: CustomScrollView(
+                controller: _controller,
+                slivers: [
+                  SliverAppBar(
+                    pinned: true,
+                    expandedHeight: appbarHeight,
+                    backgroundColor: context.colorScheme.primary,
+                    flexibleSpace: FlexibleSpaceBar(
+                      title: AnimatedOpacity(
+                        opacity: _showTitle ? 1.0 : 0.0,
+                        duration: const Duration(milliseconds: 500),
+                        child: Text(
+                          "KO-Hii",
+                          style: context.textStyle.displaySmall?.copyWith(color: Colors.white),
+                        ),
+                      ),
+                      titlePadding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 8.0),
+                      background: Container(
+                        height: appbarHeight,
+                        padding: EdgeInsets.fromLTRB(16.0, context.padding.top, 16.0, 0.0),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [Colors.black87, context.colorScheme.background],
+                            stops: [0.8, 0.2],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                          ),
+                        ),
+                        child: const Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            LocationInfo(address: "Puchong, Selangor"),
+                            SearchCoffee(),
+                            PromotionCarousel(),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    LocationInfo(address: "Puchong, Selangor"),
-                    SearchCoffee(),
-                    PromotionCarousel(),
-                  ],
-                ),
+                  SliverPersistentHeader(
+                    pinned: true,
+                    delegate: FilterGroup(
+                      height: 50.0,
+                      onTap: (filters) {
+                        context.read<CoffeeBloc>().add(CoffeeFilter(filters: filters));
+                      },
+                    ),
+                  ),
+                  BlocBuilder<CoffeeBloc, CoffeeState>(
+                    builder: (context, state) {
+                      return switch (state) {
+                        CoffeeFetchSuccess() => CoffeeGrid(coffee: state.coffee),
+                        CoffeeFetchLoading() || CoffeeFetchFailure() => CoffeeGrid.loading(),
+                      };
+                    },
+                  ),
+                ],
               ),
             ),
-          ),
-          SliverPersistentHeader(
-            pinned: true,
-            delegate: FilterGroup(height: 50.0),
-          ),
-          SliverList.list(
-            children: List.generate(
-              100,
-              (index) {
-                return Text("nice$index");
-              },
-            ),
-          ),
-        ],
+          );
+        },
       ),
     );
   }

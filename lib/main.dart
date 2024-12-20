@@ -1,3 +1,5 @@
+import 'package:coffee_shop/core/bloc_observer.dart';
+import 'package:coffee_shop/core/service_locator.dart';
 import 'package:coffee_shop/core/theme/theme_cubit.dart';
 import 'package:coffee_shop/router/router.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
 void main() {
+  injectDependencies();
+  Bloc.observer = AppBlocObserver();
+
   runApp(const MyApp());
 }
 
