@@ -6,16 +6,19 @@ import 'package:skeletonizer/skeletonizer.dart';
 class CoffeeGrid extends StatelessWidget {
   final List<Coffee> coffee;
   final bool isLoading;
+  final void Function(Coffee)? onTap;
 
   const CoffeeGrid._({
     super.key,
     required this.coffee,
     required this.isLoading,
+    required this.onTap,
   });
 
   const CoffeeGrid({
     super.key,
     required this.coffee,
+    required this.onTap,
   }) : isLoading = false;
 
   factory CoffeeGrid.loading() {
@@ -23,16 +26,19 @@ class CoffeeGrid extends StatelessWidget {
       coffee: List.generate(
         4,
         (index) => Coffee(
-          id: "id",
+          id: "id $index",
           name: "name",
+          shortDescription: "shortDescription",
           description: "description",
           imageUrl: "imageUrl",
           type: CoffeeType.white,
           price: 0.0,
           rating: 0.0,
+          ratingCount: 0,
         ),
       ),
       isLoading: true,
+      onTap: null,
     );
   }
 
@@ -47,7 +53,7 @@ class CoffeeGrid extends StatelessWidget {
           childAspectRatio: 3 / 5,
           crossAxisSpacing: 16.0,
           mainAxisSpacing: 16.0,
-          children: coffee.map((e) => CoffeeItem(coffee: e)).toList(),
+          children: coffee.map((e) => CoffeeItem(coffee: e, onTap: onTap)).toList(),
         ),
       ),
     );

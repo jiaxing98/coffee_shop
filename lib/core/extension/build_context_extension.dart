@@ -5,4 +5,5 @@ extension BuildContextExt on BuildContext {
   ColorScheme get colorScheme => Theme.of(this).colorScheme;
   Size get mqSize => MediaQuery.of(this).size;
   EdgeInsets get padding => MediaQuery.of(this).padding;
+  ScaffoldMessengerState get scaffold => ScaffoldMessenger.of(this);
 }

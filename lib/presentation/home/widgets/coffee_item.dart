@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 
 class CoffeeItem extends StatelessWidget {
   final Coffee coffee;
+  final void Function(Coffee)? onTap;
 
   const CoffeeItem({
     super.key,
     required this.coffee,
+    required this.onTap,
   });
 
   @override
@@ -40,12 +42,20 @@ class CoffeeItem extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12.0),
                     ),
                     clipBehavior: Clip.hardEdge,
-                    child: Image.network(
-                      coffee.imageUrl,
-                      fit: BoxFit.cover,
-                      errorBuilder: (ctx, ex, stacktrace) {
-                        return const Center(child: Icon(Icons.image));
+                    child: GestureDetector(
+                      onTap: () {
+                        onTap?.call(coffee);
                       },
+                      child: Hero(
+                        tag: coffee.id,
+                        child: Image.network(
+                          coffee.imageUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (ctx, ex, stacktrace) {
+                            return const Center(child: Icon(Icons.image));
+                          },
+                        ),
+                      ),
                     ),
                   );
                 },
@@ -89,7 +99,7 @@ class CoffeeItem extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    coffee.description,
+                    coffee.shortDescription,
                     style: context.textStyle.labelLarge?.copyWith(
                       color: Colors.grey.shade500,
                     ),

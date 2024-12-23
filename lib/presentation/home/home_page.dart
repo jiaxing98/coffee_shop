@@ -6,8 +6,10 @@ import 'package:coffee_shop/presentation/home/widgets/filter_group.dart';
 import 'package:coffee_shop/presentation/home/widgets/location_info.dart';
 import 'package:coffee_shop/presentation/home/widgets/promotion_carousel.dart';
 import 'package:coffee_shop/presentation/home/widgets/search_coffee.dart';
+import 'package:coffee_shop/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -45,12 +47,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (ctx) => sl.get<CoffeeBloc>()..add(CoffeeFetch())),
-      ],
-      child: Builder(
-        builder: (context) {
+    return BlocProvider(
+      create: (ctx) => sl.get<CoffeeBloc>()..add(CoffeeFetch()),
+      child: BlocBuilder<CoffeeBloc, CoffeeState>(
+        builder: (context, state) {
           return Scaffold(
             body: RefreshIndicator(
               onRefresh: () async => context.read<CoffeeBloc>().add(CoffeeFetch()),
@@ -102,14 +102,15 @@ class _HomePageState extends State<HomePage> {
                       },
                     ),
                   ),
-                  BlocBuilder<CoffeeBloc, CoffeeState>(
-                    builder: (context, state) {
-                      return switch (state) {
-                        CoffeeFetchSuccess() => CoffeeGrid(coffee: state.coffee),
-                        CoffeeFetchLoading() || CoffeeFetchFailure() => CoffeeGrid.loading(),
-                      };
-                    },
-                  ),
+                  switch (state) {
+                    CoffeeFetchSuccess() => CoffeeGrid(
+                        coffee: state.coffee,
+                        onTap: (coffee) {
+                          context.pushNamed(Routes.product, extra: coffee);
+                        },
+                      ),
+                    CoffeeFetchLoading() || CoffeeFetchFailure() => CoffeeGrid.loading(),
+                  },
                 ],
               ),
             ),

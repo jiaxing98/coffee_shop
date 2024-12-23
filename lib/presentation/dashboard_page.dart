@@ -38,6 +38,7 @@ class _DashboardPageState extends State<DashboardPage> with SingleTickerProvider
           overlayColor: MaterialStateProperty.all(Colors.transparent),
           splashFactory: NoSplash.splashFactory,
           indicatorColor: Colors.transparent,
+          dividerColor: Colors.transparent,
           onTap: _onChangedTab,
           tabs: [
             Tab(
