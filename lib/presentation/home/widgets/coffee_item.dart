@@ -1,5 +1,5 @@
-import 'package:coffee_shop/core/extension/build_context_extension.dart';
-import 'package:coffee_shop/core/intl/intl_currency.dart';
+import 'package:coffee_shop/core/extensions/build_context.dart';
+import 'package:coffee_shop/core/extensions/intl_currency.dart';
 import 'package:coffee_shop/domain/models/coffee.dart';
 import 'package:flutter/material.dart';
 

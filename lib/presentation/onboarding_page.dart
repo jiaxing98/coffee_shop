@@ -1,5 +1,5 @@
 import 'package:coffee_shop/core/const/images.dart';
-import 'package:coffee_shop/core/extension/build_context_extension.dart';
+import 'package:coffee_shop/core/extensions/build_context.dart';
 import 'package:coffee_shop/router/router.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';

@@ -1,4 +1,4 @@
-import 'package:coffee_shop/core/extension/build_context_extension.dart';
+import 'package:coffee_shop/core/extensions/build_context.dart';
 import 'package:coffee_shop/core/service_locator.dart';
 import 'package:coffee_shop/presentation/home/blocs/coffee_bloc.dart';
 import 'package:coffee_shop/presentation/home/widgets/coffee_grid.dart';
@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    appbarHeight = context.mqSize.height / 2.8;
+    appbarHeight = context.mqSize.height / 3;
   }
 
   @override
@@ -75,12 +75,7 @@ class _HomePageState extends State<HomePage> {
                         height: appbarHeight,
                         padding: EdgeInsets.fromLTRB(16.0, context.padding.top, 16.0, 0.0),
                         decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [Colors.black87, context.colorScheme.background],
-                            stops: [0.8, 0.2],
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                          ),
+                          color: context.colorScheme.secondary,
                         ),
                         child: const Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,

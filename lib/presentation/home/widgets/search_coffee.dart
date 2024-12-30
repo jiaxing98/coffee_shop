@@ -1,4 +1,4 @@
-import 'package:coffee_shop/core/extension/build_context_extension.dart';
+import 'package:coffee_shop/core/extensions/build_context.dart';
 import 'package:flutter/material.dart';
 
 class SearchCoffee extends StatelessWidget {
@@ -20,7 +20,7 @@ class SearchCoffee extends StatelessWidget {
                     context.textStyle.bodyLarge?.copyWith(color: context.colorScheme.onSecondary),
                 decoration: InputDecoration(
                   filled: true,
-                  fillColor: context.colorScheme.secondary,
+                  fillColor: Colors.grey.shade600,
                   hintText: "Search Coffee",
                   hintStyle: context.textStyle.bodyLarge?.copyWith(color: Colors.grey.shade500),
                   border: OutlineInputBorder(

@@ -2,18 +2,28 @@ part of 'theme_cubit.dart';
 
 @immutable
 final class ThemeState extends Equatable {
-  final MapEntry<String, ThemeData> theme;
+  final ThemeMode mode;
+  final ({ThemeData light, ThemeData dark}) theme;
 
-  const ThemeState({required this.theme});
+  const ThemeState({
+    required this.mode,
+    required this.theme,
+  });
 
   ThemeState copyWith({
-    MapEntry<String, ThemeData>? theme,
+    ThemeMode? mode,
+    ({ThemeData light, ThemeData dark})? theme,
   }) {
     return ThemeState(
+      mode: mode ?? this.mode,
       theme: theme ?? this.theme,
     );
   }
 
+  ThemeData get light => theme.light;
+  ThemeData get dark => theme.dark;
+
   @override
-  List<Object> get props => [theme];
+  List<Object> get props => [mode, theme];
 }
+

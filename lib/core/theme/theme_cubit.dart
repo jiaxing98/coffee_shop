@@ -1,36 +1,50 @@
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
-import 'package:coffee_shop/core/theme/theme_data.dart';
+import 'package:coffee_shop/core/theme/theme.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'theme_state.dart';
 
+const _themeMode = "THEME_MODE";
+const _themeData = "THEME_DATA";
+
+
 class ThemeCubit extends Cubit<ThemeState> {
-  final themeKey = "THEME_KEY";
+  final SharedPreferences _sp;
 
-  ThemeCubit() : super(ThemeState(theme: AppTheme.themeCoffee));
+  ThemeCubit({
+    required SharedPreferences sp,
+    required ({ThemeData light, ThemeData dark}) defaultTheme,
+  })  : _sp = sp,
+        super(ThemeState(
+        mode: ThemeMode.system,
+        theme: defaultTheme,
+      ));
 
-  Future<void> changeTheme(String themeName) async {
-    final sp = await SharedPreferences.getInstance();
+  void loadTheme() {
+    final index = _sp.getInt(_themeMode);
+    final key = _sp.getString(_themeData);
 
-    switch (themeName) {
-      case AppTheme.keyCoffee:
-        emit(state.copyWith(theme: AppTheme.themeCoffee));
-    }
+    ThemeMode? savedMode = index != null ? ThemeMode.values[index] : state.mode;
+    ({ThemeData light, ThemeData dark})? savedTheme =
+    (key != null && appThemes.containsKey(key)) ? appThemes[key]! : state.theme;
 
-    sp.setString(themeKey, themeName);
+    emit(state.copyWith(mode: savedMode, theme: savedTheme));
   }
 
-  Future<void> loadTheme() async {
-    final sp = await SharedPreferences.getInstance();
-    final themeName = sp.getString(themeKey) ?? AppTheme.keyCoffee;
+  Future<void> changeMode(ThemeMode mode) async {
+    await _sp.setInt(_themeMode, mode.index);
+    emit(state.copyWith(mode: mode));
+  }
 
-    switch (themeName) {
-      case AppTheme.keyCoffee:
-        emit(state.copyWith(theme: AppTheme.themeCoffee));
-      default:
-        emit(state.copyWith(theme: AppTheme.themeCoffee));
-    }
+  Future<void> changeTheme() async {
+    var random = Random().nextInt(appThemes.length);
+    final randomTheme = appThemes.entries.toList()[random];
+
+    await _sp.setString(_themeData, randomTheme.key);
+    emit(state.copyWith(theme: randomTheme.value));
   }
 }

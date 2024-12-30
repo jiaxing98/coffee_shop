@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
-extension IntlDateTime on DateTime {
+extension IntlDateTimeX on DateTime {
   // 10/23/2024
   String get yMd => DateFormat.yMd().format(this);
 
