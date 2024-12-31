@@ -22,8 +22,7 @@ class CoffeeBloc extends Bloc<CoffeeEvent, CoffeeState> {
   Future<void> _fetchCoffee(CoffeeFetch event, Emitter<CoffeeState> emit) async {
     emit(const CoffeeFetchLoading());
     try {
-      final coffee = await _repository.getCoffeeProducts();
-      this.coffee = coffee;
+      coffee = await _repository.getCoffeeProducts();
       emit(CoffeeFetchSuccess(coffee: coffee));
     } on Exception catch (ex) {
       emit(CoffeeFetchFailure(coffee: state.coffee, exception: ex));

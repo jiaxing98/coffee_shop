@@ -93,7 +93,7 @@ class _ProductPageState extends State<ProductPage> {
                 PurchaseBottomSheet(
                   price: widget.coffee.price.inMYR,
                   onPurchase: canPurchase
-                      ? () => context.read<ProductBloc>().add(ProductPurchase(id: widget.coffee.id))
+                      ? () => context.read<ProductBloc>().add(ProductPurchase(id: widget.coffee.id, size: selectedSize!))
                       : null,
                 )
               ],
@@ -111,6 +111,7 @@ class _ProductPageState extends State<ProductPage> {
 
       case ProductPurchaseSuccess():
         context.loaderOverlay.hide();
+        context.scaffold.clearSnackBars();
         context.scaffold.showSnackBar(
           SnackBar(
             content: Text("${widget.coffee.name} has been ordered successfully."),
@@ -119,6 +120,7 @@ class _ProductPageState extends State<ProductPage> {
 
       case ProductPurchaseFailure():
         context.loaderOverlay.hide();
+        context.scaffold.clearSnackBars();
         context.scaffold.showSnackBar(
           SnackBar(
             content: Text("Failed to order ${widget.coffee.name}."),

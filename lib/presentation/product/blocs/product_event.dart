@@ -7,6 +7,7 @@ sealed class ProductEvent {
 
 class ProductPurchase extends ProductEvent {
   final String id;
+  final CoffeeSize size;
 
-  const ProductPurchase({required this.id});
+  const ProductPurchase({required this.id, required this.size});
 }

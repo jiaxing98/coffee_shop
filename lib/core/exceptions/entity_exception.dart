@@ -1,0 +1,1 @@
+class InvalidEntityException implements Exception {}

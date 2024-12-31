@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:coffee_shop/domain/models/coffee.dart';
 import 'package:coffee_shop/domain/repositories/product_repository.dart';
+import 'package:coffee_shop/presentation/product/widgets/select_size.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
@@ -21,7 +22,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
     emit(ProductPurchaseLoading());
 
     try {
-      await _repository.buyCoffee(event.id);
+      await _repository.buyCoffee(event.id, event.size);
       emit(ProductPurchaseSuccess());
     } on Exception catch (ex) {
       emit(ProductPurchaseFailure(exception: ex));

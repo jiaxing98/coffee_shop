@@ -1,3 +1,6 @@
+import 'package:coffee_shop/core/exceptions/entity_exception.dart';
+import 'package:coffee_shop/data/entities/coffee_entity.dart';
+
 enum CoffeeType { black, white, chocolate }
 
 class Coffee {
@@ -22,4 +25,23 @@ class Coffee {
     required this.rating,
     required this.ratingCount,
   });
+
+  factory Coffee.fromEntity(CoffeeEntity entity) {
+    return Coffee(
+      id: entity.id,
+      name: entity.name,
+      shortDescription: entity.shortDescription,
+      description: entity.description,
+      imageUrl: entity.imageUrl,
+      type: switch(entity.type) {
+        0 => CoffeeType.black,
+        1 => CoffeeType.white,
+        2 => CoffeeType.chocolate,
+        _ => throw InvalidEntityException(),
+      },
+      price: entity.price,
+      rating: entity.rating,
+      ratingCount: entity.ratingCount,
+    );
+  }
 }
